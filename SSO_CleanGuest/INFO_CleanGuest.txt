@@ -1,0 +1,19 @@
+Pulizia utenti GUEST
+Per diminuire numero record “inutili” degli utenti guest nelle tabelle di SSO
+(e velocizzare le join con la view AnagraficaPersone su TLN),
+eseguire periodicamente (ad esempio 1 volta al mese, prima del periodo dei rinnovi).
+
+Il database è il TN_CUSTOMER (SSO) su 5.43.248.52
+Va eseguita una stored procedure in cui uno dei parametri è il numero di giorni all’indietro per cui tenere “vive” le utenze guest.
+
+USE TN_CUSTOMER
+-- controlla quanti guest ci sono
+SELECT count(*) FROM dbo.ANA_LOGIN al
+WHERE al.ID_STATUS = 5
+
+-- pulisce i guest mantenendo quelli degli ultimi N gg (@pNUM_DAYSTOKEEP)
+-- se si mette @pCHECK_ONLY = 1, non pulisce ma controlla e basta
+
+EXEC dbo.sp_CleanGuest @pNUM_DAYSTOKEEP = 30 , @pCHECK_ONLY = 0
+
+EXEC dbo.sp_CleanGuest @pNUM_DAYSTOKEEP = 30 , @pCHECK_ONLY = 0  -- bit

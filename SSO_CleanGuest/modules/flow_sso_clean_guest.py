@@ -10,7 +10,9 @@ class FLOW_SSO_CLEAN_GUEST:
 
     def __init__(self):
 
-        self.path_home = os.path.realpath('.')
+        # self.path_home = os.path.realpath('.')
+        self.path_home = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
+        
         self.path_config_param = self.path_home + r'/config/config_param.ini'
         self.param = PARSER_CONFIG(self.path_config_param)
 
